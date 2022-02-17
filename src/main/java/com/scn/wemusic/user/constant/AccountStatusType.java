@@ -2,9 +2,6 @@ package com.scn.wemusic.user.constant;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import lombok.RequiredArgsConstructor;
-import org.apache.ibatis.type.JdbcType;
-import org.apache.ibatis.type.MappedTypes;
-import org.apache.ibatis.type.TypeHandler;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.AttributeConverter;

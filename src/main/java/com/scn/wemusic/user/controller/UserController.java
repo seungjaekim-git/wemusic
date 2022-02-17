@@ -20,11 +20,6 @@ public class UserController {
 
     private final UserService userService;
 
-    // 회원가입 API
-    @PostMapping(value = "/register")
-    public ResponseEntity registerUser() {
-        return
-    }
 
 
 }

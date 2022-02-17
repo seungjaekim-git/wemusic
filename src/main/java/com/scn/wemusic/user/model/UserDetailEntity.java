@@ -5,7 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.io.Serializable;
 
-@Entity
+//@Entity
 public class UserDetailEntity implements Serializable {
 
     @Id

@@ -10,13 +10,13 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 import java.io.Serializable;
 
-@Slf4j
+/*@Slf4j
 @Getter
 @Entity
 @DynamicUpdate
 @NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
-@Table(name = "account", schema = "wemusic")
+@Table(name = "account", schema = "wemusic")*/
 public class AccountEntity implements Serializable {
 
     @Id

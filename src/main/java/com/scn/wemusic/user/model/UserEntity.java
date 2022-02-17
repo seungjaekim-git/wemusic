@@ -1,38 +1,64 @@
 package com.scn.wemusic.user.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.gson.annotations.Expose;
-import com.scn.wemusic.common.constant.SNSType;
+import com.scn.wemusic.common.constant.OAuthProviderType;
+import com.scn.wemusic.common.constant.UserRoleType;
 import com.scn.wemusic.common.constant.YesNoType;
-import com.scn.wemusic.common.event.BaseEntity;
-import com.scn.wemusic.user.constant.AccountStatusType;
+import com.scn.wemusic.common.event.BaseTimeEntity;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
 
 @Entity
+@Getter
+@NoArgsConstructor
+@Table(name = "user")
 @EntityListeners(AuditingEntityListener.class)
-public class UserEntity extends BaseEntity implements Serializable, UserDetails {
+public class UserEntity extends BaseTimeEntity implements Serializable, UserDetails {
 
+    @JsonIgnore
     @Id
-    @GeneratedValue()
-    @Column(name = "idx")
-    private Long idx;
+    @Column(name = "user_seq")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long userSeq;
 
-    @Column(name = "accountId")
+    @Column(name = "user_id", unique = true)
     private String userId;
 
+    @Column(name = "user_name", length = 100)
+    @NotNull
+    private String userName;
+
+    @JsonIgnore
     @Column(length = 400, name = "password")
     private String password;
 
-    @Column(name = "status")
-    private AccountStatusType accountStatusType;
+    @Column(name = "email", unique = true)
+    @NotNull
+    private String email;
+
+    @Column(name = "profile_image_url", length = 512)
+    @NotNull
+    private String profileImageUrl;
+
+    @Column(name = "provider_type", length = 20)
+    @NotNull
+    private OAuthProviderType providerType;
+
+    @Column(name = "user_role_type", length = 20)
+    @NotNull
+    private UserRoleType roleType;
 
     @Column(name = "last_login_date")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")

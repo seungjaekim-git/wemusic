@@ -1,4 +1,4 @@
-package com.scn.wemusic.common.config;
+package com.scn.wemusic.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -6,6 +6,7 @@ import org.springframework.data.domain.AuditorAware;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import java.security.Principal;
 import java.util.Optional;
 
 @Configuration
@@ -19,9 +20,7 @@ public class JPAAuditConfig {
             @Override
             public Optional<String> getCurrentAuditor() {
                 if (SecurityContextHolder.getContext().getAuthentication() != null) {
-                    OAuth2Authentication auth = (OAuth2Authentication) SecurityContextHolder.getContext().getAuthentication();
-                    Object principal = auth.getUserAuthentication().getPrincipal();
-                    return userDetails.getUsername();
+                    return null;
                 } else {
                     return Optional.of("Unknown");
                 }

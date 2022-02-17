@@ -18,8 +18,6 @@ public class UserDto {
 
         private String emailAddress;
 
-        private String
-
     }
 
     @Getter
@@ -29,4 +27,6 @@ public class UserDto {
 
 
     }
+
+
 }
