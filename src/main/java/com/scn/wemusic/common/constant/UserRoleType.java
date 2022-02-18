@@ -11,7 +11,6 @@ import java.util.Arrays;
 
 @RequiredArgsConstructor
 @Getter
-@AllArgsConstructor
 public enum UserRoleType {
     USER("ROLE_USER", "일반 사용자 권한"),
     ADMIN("ROLE_ADMIN", "관리자 권한"),

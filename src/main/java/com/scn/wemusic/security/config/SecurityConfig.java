@@ -1,7 +1,21 @@
-package com.scn.wemusic.security;
+package com.scn.wemusic.security.config;
 
-import com.google.firebase.database.core.AuthTokenProvider;
+import com.scn.wemusic.common.constant.UserRoleType;
+import com.scn.wemusic.security.exception.RestAuthenticationEntryPoint;
+import com.scn.wemusic.security.filter.TokenAuthenticationFilter;
+import com.scn.wemusic.security.handler.OAuth2AuthenticationFailureHandler;
+import com.scn.wemusic.security.handler.OAuth2AuthenticationSuccessHandler;
+import com.scn.wemusic.security.handler.TokenAccessDeniedHandler;
+import com.scn.wemusic.security.repository.OAuth2AuthorizationRequestBasedOnCookieRepository;
+import com.scn.wemusic.security.token.AuthTokenProvider;
+import com.scn.wemusic.user.item.AppProperties;
+import com.scn.wemusic.user.item.CorsProperties;
+import com.scn.wemusic.user.repository.UserRefreshTokenRepository;
+import com.scn.wemusic.user.service.OAuth2UserService;
+import com.scn.wemusic.user.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.BeanIds;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -16,15 +30,17 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
 
+@Configuration
+@RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final CorsProperties corsProperties;
     private final AppProperties appProperties;
-    private final AuthTokenProvider tokenProvider;
-    private final CustomUserDetailsService userDetailsService;
-    private final CustomOAuth2UserService oAuth2UserService;
+    private final UserService userDetailsService;
+    private final OAuth2UserService oAuth2UserService;
     private final TokenAccessDeniedHandler tokenAccessDeniedHandler;
     private final UserRefreshTokenRepository userRefreshTokenRepository;
+    private final AuthTokenProvider tokenProvider;
 
     /*
      * UserDetailsService 설정
@@ -52,8 +68,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
-                .antMatchers("/api/**").hasAnyAuthority(RoleType.USER.getCode())
-                .antMatchers("/api/**/admin/**").hasAnyAuthority(RoleType.ADMIN.getCode())
+                .antMatchers("/api/**").hasAnyAuthority(UserRoleType.USER.getCode())
+                .antMatchers("/api/**/admin/**").hasAnyAuthority(UserRoleType.ADMIN.getCode())
                 .anyRequest().authenticated()
                 .and()
                 .oauth2Login()

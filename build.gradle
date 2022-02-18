@@ -49,6 +49,7 @@ dependencies {
 	implementation 'org.springframework.security:spring-security-jwt:1.1.1.RELEASE'
 
 
+
 	// validation
 	// implementation 'org.hibernate.validator:hibernate-validator:7.0.1.Final'
 	// https://mvnrepository.com/artifact/javax.validation/validation-api
@@ -144,7 +145,6 @@ dependencies {
 
 //    implementation 'com.mainpay.sdk:mainpay-sdk:2.0'
 	// 휴대폰 본인 인증 라이브러리
-	implementation 'nice.id.check:nice-id-check:1.0'
 
 	implementation group: 'org.javassist', name: 'javassist', version: '3.15.0-GA'
 }

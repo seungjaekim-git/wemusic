@@ -22,16 +22,20 @@ public class UserRefreshToken {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long refreshTokenSeq;
 
-    @Column(name = "user_id", length = 64, unique = true)
+    @Column(name = "user_id")
     @NotNull
     private String userId;
 
-    @Column(name = "refresh_token", length = 256)
+    @Column(name = "refresh_token")
     @NotNull
     private String refreshToken;
 
     public UserRefreshToken(String userId, String refreshToken) {
         this.userId = userId;
         this.refreshToken = refreshToken;
+    }
+
+    public void setRefreshToken(String token){
+        this.refreshToken = token;
     }
 }

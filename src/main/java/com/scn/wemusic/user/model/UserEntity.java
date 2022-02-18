@@ -7,9 +7,12 @@ import com.scn.wemusic.common.constant.OAuthProviderType;
 import com.scn.wemusic.common.constant.UserRoleType;
 import com.scn.wemusic.common.constant.YesNoType;
 import com.scn.wemusic.common.event.BaseTimeEntity;
+import com.scn.wemusic.user.item.OAuth2UserInfo;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicInsert;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -23,6 +26,7 @@ import java.util.Date;
 @Entity
 @Getter
 @NoArgsConstructor
+@DynamicInsert
 @Table(name = "user")
 @EntityListeners(AuditingEntityListener.class)
 public class UserEntity extends BaseTimeEntity implements Serializable, UserDetails {
@@ -78,19 +82,16 @@ public class UserEntity extends BaseTimeEntity implements Serializable, UserDeta
     protected Date changePwDate;
 
     @Expose
-    @ColumnDefault("N")
     @Convert(converter = YesNoType.YesNoTypeAttributeConverter.class)
     @Column(name = "is_sms_yn", columnDefinition = "CHAR(1)", nullable = false)
     private YesNoType isSmsYn;
 
     @Expose
-    @ColumnDefault("N")
     @Convert(converter = YesNoType.YesNoTypeAttributeConverter.class)
     @Column(name = "is_push_yn", columnDefinition = "CHAR(1)", nullable = false)
     private YesNoType isPushYn;
 
     @Expose
-    @ColumnDefault("N")
     @Convert(converter = YesNoType.YesNoTypeAttributeConverter.class)
     @Column(name = "is_email_yn", columnDefinition = "CHAR(1)", nullable = false)
     private YesNoType isEmailYn;
@@ -104,7 +105,6 @@ public class UserEntity extends BaseTimeEntity implements Serializable, UserDeta
     public String getPassword() {
         return null;
     }
-
 
     @Override
     public String getUsername() {
@@ -129,5 +129,30 @@ public class UserEntity extends BaseTimeEntity implements Serializable, UserDeta
     @Override
     public boolean isEnabled() {
         return false;
+    }
+
+    @Builder
+    public UserEntity(OAuth2UserInfo userInfo, OAuthProviderType providerType) {
+        this.userId = userInfo.getId();
+        this.userName = userInfo.getName();
+        this.email = userInfo.getEmail();
+        this.profileImageUrl = userInfo.getImageUrl();
+        this.providerType = providerType;
+        this.roleType = UserRoleType.USER;
+        this.lastLoginDate = new Date();
+        this.registerDate = new Date();
+        this.passwordFailCount = 0;
+        this.changePwDate = new Date();
+        this.isSmsYn = YesNoType.NO;
+        this.isPushYn = YesNoType.NO;
+        this.isEmailYn = YesNoType.NO;
+    }
+
+    public void setUsername(String name) {
+        this.userName = name;
+    }
+
+    public void setProfileImageUrl(String imageUrl) {
+        this.profileImageUrl = imageUrl;
     }
 }
